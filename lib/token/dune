@@ -1,3 +1,4 @@
 (library
  (name token)
- (public_name chicken.token))
+ (public_name chicken.token)
+ (libraries fmt))

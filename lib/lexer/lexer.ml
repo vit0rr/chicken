@@ -28,8 +28,7 @@ let read_type fn lexer =
   let rec read lex = if fn lex.ch then lex |> read_char |> read else lex in
   let updated_lex = read lexer in
   ( updated_lex,
-    String.sub updated_lex.input position (updated_lex.position - position - 1)
-  )
+    String.sub lexer.input position (updated_lex.position - position) )
 
 let read_identifier = read_type is_letter
 let read_number = read_type is_digit
@@ -39,7 +38,7 @@ let peek_char lexer =
   else String.get lexer.input lexer.read_position
 
 let read_string lexer =
-  let position = lexer.position in
+  let position = lexer.position + 1 in
   let rec read lex =
     if lex.ch = '"' then lex
     else if lex.ch = null_char then lex
