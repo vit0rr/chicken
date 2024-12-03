@@ -1,0 +1,4 @@
+(dirs token lexer)
+
+(library
+ (name chicken))

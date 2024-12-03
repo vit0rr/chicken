@@ -1,0 +1,3 @@
+(test
+ (name chicken)
+ (libraries lexer alcotest))

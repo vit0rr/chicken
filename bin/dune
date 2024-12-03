@@ -1,0 +1,6 @@
+(dirs token)
+
+(executable
+ (public_name chicken)
+ (name main)
+ (libraries token lexer))
