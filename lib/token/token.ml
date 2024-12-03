@@ -69,4 +69,10 @@ let keywords =
     ("return", RETURN);
   ]
 
+let tokens_eq tok_a tok_b =
+  match (tok_a, tok_b) with
+  | IDENT a, IDENT b -> a = b
+  | tok_a, tok_b -> tok_a = tok_b
+
+let pretty_print ppf tok = Fmt.pf ppf "Token %s" (token_to_string tok)
 let lookup_ident str = try List.assoc str keywords with Not_found -> IDENT str

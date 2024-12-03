@@ -1,0 +1,5 @@
+
+
+(test
+ (name lexer_test)
+ (libraries lexer alcotest token))
