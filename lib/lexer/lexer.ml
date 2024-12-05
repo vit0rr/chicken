@@ -73,6 +73,11 @@ let rec next_char lexer =
   | '/' -> (read_char lexer, Token.SLASH)
   | '<' -> (read_char lexer, Token.LT)
   | '>' -> (read_char lexer, Token.GT)
+  | '|' ->
+      if peek_char lexer = '|' then (double_read lexer, Token.OR)
+      else (read_char lexer, Token.ILLEGAL)
+  | '[' -> (read_char lexer, Token.LBRACKET)
+  | ']' -> (read_char lexer, Token.RBRACKET)
   | ' ' -> skip lexer
   | '\t' -> skip lexer
   | '\n' -> skip lexer

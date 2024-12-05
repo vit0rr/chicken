@@ -23,6 +23,7 @@ let source_test_string =
    \t10 == 10;\n\
    \t10 != 9;\n\
    \t\"string\";\n\
+   \t||;\n\
   \  "
 
 let source_test_expected =
@@ -108,6 +109,8 @@ let source_test_expected =
     Token.INT "9";
     Token.SEMICOLON;
     Token.STRING "string";
+    Token.SEMICOLON;
+    Token.OR;
     Token.SEMICOLON;
     (* sentinel *)
     Token.EOF;

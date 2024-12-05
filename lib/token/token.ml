@@ -1,9 +1,11 @@
 type token =
   | ILLEGAL
   | EOF
+  (* Identifiers and literals *)
   | IDENT of string
   | INT of string
   | STRING of string
+  (* Operators *)
   | ASSIGN
   | PLUS
   | MINUS
@@ -12,12 +14,20 @@ type token =
   | SLASH
   | LT
   | GT
+  | OR
+  (* Equality operators *)
+  | EQ
+  | NOT_EQ
+  (* Delimiters *)
   | COMMA
   | SEMICOLON
   | LPAREN
   | RPAREN
   | LBRACE
   | RBRACE
+  | LBRACKET
+  | RBRACKET
+  (* Keywords *)
   | FUNCTION
   | LET
   | TRUE
@@ -25,8 +35,6 @@ type token =
   | IF
   | ELSE
   | RETURN
-  | EQ
-  | NOT_EQ
 
 let token_to_string = function
   | ILLEGAL -> "ILLEGAL"
@@ -57,6 +65,9 @@ let token_to_string = function
   | RETURN -> "RETURN"
   | EQ -> "EQ"
   | NOT_EQ -> "NOT_EQ"
+  | OR -> "OR"
+  | LBRACKET -> "LBRACKET"
+  | RBRACKET -> "RBRACKET"
 
 let keywords =
   [
