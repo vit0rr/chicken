@@ -1,4 +1,4 @@
-(dirs token lexer)
+(dirs token lexer parser)
 
 (library
  (name chicken))
