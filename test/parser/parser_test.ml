@@ -78,6 +78,46 @@ let test_let_statement_with_integer_literal () =
           | _ -> Alcotest.fail "Value is not an integer literal")
       | _ -> Alcotest.fail "Statement is not a let statement")
 
+let test_infix_expression () =
+  let test_cases =
+    [
+      ("5 + 5", "5", "+", "5");
+      ("5 - 5", "5", "-", "5");
+      ("5 * 5", "5", "*", "5");
+      ("5 / 5", "5", "/", "5");
+      ("5 > 5", "5", ">", "5");
+      ("5 < 5", "5", "<", "5");
+      ("5 == 5", "5", "==", "5");
+      ("5 != 5", "5", "!=", "5");
+    ]
+  in
+
+  List.iter
+    (fun (input, expected_left, expected_operator, expected_right) ->
+      let lexer = Lexer.new_lexer input in
+      let parser = Parser.new_parser lexer in
+
+      let parser, left_expr = Parser.parse_integer_literal parser in
+      match left_expr with
+      | Some left -> (
+          let parser = Parser.next_token parser in
+          let _, expr = Parser.parse_infix_expression parser left in
+          match expr with
+          | Some (Ast.InfixExpression { left; operator; right; _ }) -> (
+              match (left, right) with
+              | ( Ast.IntegerLiteral { value = left_val; _ },
+                  Ast.IntegerLiteral { value = right_val; _ } ) ->
+                  Alcotest.(check string)
+                    "left value" expected_left (Int64.to_string left_val);
+                  Alcotest.(check string) "operator" expected_operator operator;
+                  Alcotest.(check string)
+                    "right value" expected_right
+                    (Int64.to_string right_val)
+              | _ -> Alcotest.fail "Expression parts are not integer literals")
+          | _ -> Alcotest.fail "Not an infix expression")
+      | None -> Alcotest.fail "Failed to parse left expression")
+    test_cases
+
 let () =
   Alcotest.run "Parser"
     [
@@ -94,4 +134,7 @@ let () =
           Alcotest.test_case "let statement with integer literal" `Quick
             test_let_statement_with_integer_literal;
         ] );
+      ( "parse infix expression",
+        [ Alcotest.test_case "infix expression" `Quick test_infix_expression ]
+      );
     ]
