@@ -61,6 +61,23 @@ let test_let_statement () =
           | _ -> Alcotest.fail "Value is not an identifier")
       | _ -> Alcotest.fail "Statement is not a let statement")
 
+let test_let_statement_with_integer_literal () =
+  let lexer = Lexer.new_lexer "let myVar = 5;" in
+  let parser = Parser.new_parser lexer in
+  match Parser.parse_let_statement parser with
+  | _, None -> Alcotest.fail "Failed to parse let statement"
+  | _, Some stmt -> (
+      match stmt with
+      | Ast.LetStatement { token = Token.LET; name; value } -> (
+          match value with
+          | Ast.IntegerLiteral { token = Token.INT literal; value = int_value }
+            ->
+              Alcotest.(check string) "name value" "myVar" name.value;
+              Alcotest.(check string) "integer token" "5" literal;
+              Alcotest.(check int64) "integer value" 5L int_value
+          | _ -> Alcotest.fail "Value is not an integer literal")
+      | _ -> Alcotest.fail "Statement is not a let statement")
+
 let () =
   Alcotest.run "Parser"
     [
@@ -72,5 +89,9 @@ let () =
           Alcotest.test_case "boolean literal" `Quick test_boolean_literal;
         ] );
       ( "parse statements",
-        [ Alcotest.test_case "let statement" `Quick test_let_statement ] );
+        [
+          Alcotest.test_case "let statement" `Quick test_let_statement;
+          Alcotest.test_case "let statement with integer literal" `Quick
+            test_let_statement_with_integer_literal;
+        ] );
     ]
