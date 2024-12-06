@@ -206,3 +206,23 @@ let parse_infix_expression parser left =
   | Some right ->
       (parser, Some (Ast.InfixExpression { token; left; operator; right }))
   | None -> (error_parse parser "Failed to parse right expression", None)
+
+let parse_prefix_expression parser =
+  let token = parser.current_token in
+  let operator =
+    match token with
+    | Token.BANG -> "!"
+    | Token.MINUS -> "-"
+    | _ -> Token.token_to_string token
+  in
+  let parser = next_token parser in
+  let parser, right_opt = parse_integer_literal parser in
+  match right_opt with
+  | Some (Ast.IntegerLiteral { token = t; value = v }) ->
+      let right =
+        if operator = "-" then
+          Ast.IntegerLiteral { token = t; value = Int64.neg v }
+        else Ast.IntegerLiteral { token = t; value = v }
+      in
+      (parser, Some (Ast.PrefixExpression { token; operator; right }))
+  | _ -> (error_parse parser "Failed to parse right expression", None)
