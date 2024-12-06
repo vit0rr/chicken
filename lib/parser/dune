@@ -1,4 +1,4 @@
 (library
  (name parser)
  (public_name chicken.parser)
- (libraries token lexer fmt))
+ (libraries token lexer fmt ast))

@@ -7,7 +7,7 @@ type expressions =
   | Identifier of identifier
   | IntegerLiteral of { token : Token.token; value : int64 }
   | StringLiteral of { token : Token.token; value : string }
-  | Boolean of { token : Token.token; value : bool }
+  | BooleanLiteral of { token : Token.token; value : bool }
   | PrefixExpression of {
       token : Token.token;
       operator : string;
@@ -69,7 +69,7 @@ let rec expression_to_string (expr : expressions) : string =
   | Identifier id -> id.value
   | IntegerLiteral { value; _ } -> Int64.to_string value
   | StringLiteral { value; _ } -> Printf.sprintf "\"%s\"" value
-  | Boolean { value; _ } -> string_of_bool value
+  | BooleanLiteral { value; _ } -> string_of_bool value
   | PrefixExpression { operator; right; _ } ->
       Printf.sprintf "(%s%s)" operator (expression_to_string right)
   | InfixExpression { left; operator; right; _ } ->
