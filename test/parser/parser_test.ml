@@ -118,6 +118,19 @@ let test_infix_expression () =
       | None -> Alcotest.fail "Failed to parse left expression")
     test_cases
 
+let test_prefix_expression () =
+  let lexer = Lexer.new_lexer "-5" in
+  let parser = Parser.new_parser lexer in
+  let _, expr = Parser.parse_prefix_expression parser in
+  match expr with
+  | Some (Ast.PrefixExpression { operator; right; _ }) -> (
+      match right with
+      | Ast.IntegerLiteral { value; _ } ->
+          Alcotest.(check string) "operator" "-" operator;
+          Alcotest.(check int64) "value" (-5L) value
+      | _ -> Alcotest.fail "Right operand is not an integer literal")
+  | _ -> Alcotest.fail "Not a prefix expression"
+
 let () =
   Alcotest.run "Parser"
     [
@@ -136,5 +149,8 @@ let () =
         ] );
       ( "parse infix expression",
         [ Alcotest.test_case "infix expression" `Quick test_infix_expression ]
+      );
+      ( "parse prefix expression",
+        [ Alcotest.test_case "prefix expression" `Quick test_prefix_expression ]
       );
     ]
