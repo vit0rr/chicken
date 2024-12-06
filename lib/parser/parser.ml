@@ -119,7 +119,7 @@ let parse_expression parser =
   | None -> parse_identifier parser
 
 let parse_let_statement parser =
-  let token = parser.current_token in
+  let let_token = parser.current_token in
   let parser = next_token parser in
 
   match parser.current_token with
@@ -140,7 +140,8 @@ let parse_let_statement parser =
                 if parser.peek_token = Token.SEMICOLON then next_token parser
                 else parser
               in
-              (parser, Some (Ast.LetStatement { token; name; value }))
+              ( parser,
+                Some (Ast.LetStatement { token = let_token; name; value }) )
           | None -> (error_parse parser "Failed to parse expression", None))
       | _ -> (error_parse parser "Expected '=' after identifier", None))
   | _ -> (error_parse parser "Expected identifier after 'let'", None)
@@ -168,21 +169,40 @@ let parse_statement parser =
 let parse_block_statement parser =
   let token = parser.current_token in
   let parser = next_token parser in
-  let rec parse_statements parser statements =
-    match parser.current_token with
-    | Token.RBRACE ->
-        let parser = next_token parser in
-        (parser, Some (Ast.BlockStatement { token; statements }))
-    | Token.EOF -> (parser, None)
-    | Token.SEMICOLON -> parse_statements (next_token parser) statements
-    | _ -> (
-        let parser, stmt_opt = parse_statement parser in
-        match stmt_opt with
-        | Some stmt ->
-            let parser = next_token parser in
-            parse_statements parser (statements @ [ stmt ])
-        | None ->
-            let parser = next_token parser in
-            parse_statements parser statements)
+
+  let rec parse_statements parser stmts =
+    if parser.current_token = Token.RBRACE || parser.current_token = Token.EOF
+    then (parser, stmts)
+    else
+      let parser, stmt_opt = parse_statement parser in
+      match stmt_opt with
+      | Some stmt ->
+          let parser = next_token parser in
+          parse_statements parser (stmt :: stmts)
+      | None -> (parser, stmts)
   in
-  parse_statements parser []
+
+  let parser, statements = parse_statements parser [] in
+  (parser, Ast.BlockStatement { token; statements = List.rev statements })
+
+let parse_infix_expression parser left =
+  let token = parser.current_token in
+  let operator =
+    match token with
+    | Token.PLUS -> "+"
+    | Token.MINUS -> "-"
+    | Token.ASTERISK -> "*"
+    | Token.SLASH -> "/"
+    | Token.EQ -> "=="
+    | Token.NOT_EQ -> "!="
+    | Token.LT -> "<"
+    | Token.GT -> ">"
+    | _ -> Token.token_to_string token
+  in
+  let parser = next_token parser in
+  let parser = next_token parser in
+  let parser, right_opt = parse_integer_literal parser in
+  match right_opt with
+  | Some right ->
+      (parser, Some (Ast.InfixExpression { token; left; operator; right }))
+  | None -> (error_parse parser "Failed to parse right expression", None)
