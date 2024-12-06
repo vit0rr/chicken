@@ -119,13 +119,31 @@ let parse_expression parser =
   | None -> parse_identifier parser
 
 let parse_let_statement parser =
-  let parser, name_opt = parse_identifier parser in
-  let parser, value_opt = parse_expression parser in
-  match (name_opt, value_opt) with
-  | Some (Identifier name), Some value ->
-      ( parser,
-        Some (Ast.LetStatement { token = parser.current_token; name; value }) )
-  | _ -> (parser, None)
+  let token = parser.current_token in
+  let parser = next_token parser in
+
+  match parser.current_token with
+  | Token.IDENT identifier -> (
+      let name : Ast.identifier =
+        { token = parser.current_token; value = identifier }
+      in
+      let parser = next_token parser in
+      let parser = next_token parser in
+
+      match parser.current_token with
+      | Token.ASSIGN -> (
+          let parser = next_token parser in
+          let parser, value_opt = parse_expression parser in
+          match value_opt with
+          | Some value ->
+              let parser =
+                if parser.peek_token = Token.SEMICOLON then next_token parser
+                else parser
+              in
+              (parser, Some (Ast.LetStatement { token; name; value }))
+          | None -> (error_parse parser "Failed to parse expression", None))
+      | _ -> (error_parse parser "Expected '=' after identifier", None))
+  | _ -> (error_parse parser "Expected identifier after 'let'", None)
 
 let parse_return_statement parser =
   let parser, value_opt = parse_expression parser in
