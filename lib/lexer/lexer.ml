@@ -690,7 +690,7 @@ let
 
   | 14 ->
 # 27 "lib/lexer/lexer.mll"
-                  ( new_token COLLON ":" )
+                  ( new_token COLON ":" )
 # 695 "lib/lexer/lexer.ml"
 
   | 15 ->

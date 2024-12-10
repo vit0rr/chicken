@@ -24,7 +24,7 @@ rule token = parse
   | "=="          { new_token EQ "==" }
   | "!="          { new_token NOT_EQ "!=" }
   | ","           { new_token COMMA "," }
-  | ":"           { new_token COLLON ":" }
+  | ":"           { new_token COLON ":" }
   | ";"           { new_token SEMICOLON ";" }
   | "("           { new_token LPAREN "(" }
   | ")"           { new_token RPAREN ")" }

@@ -18,7 +18,6 @@ type token_type =
   | NOT_EQ
   (* delimeters *)
   | COMMA
-  | COLLON
   | SEMICOLON
   | LPAREN
   | RPAREN
@@ -26,6 +25,7 @@ type token_type =
   | RBRACE
   | LBRACKET
   | RBRACKET
+  | COLON
   (* keywords *)
   | FUNCTION
   | LET
@@ -58,7 +58,6 @@ let token_to_string token =
   | NOT_EQ -> "NOT_EQ"
   (* delimeters *)
   | COMMA -> "COMMA"
-  | COLLON -> "COLLON"
   | SEMICOLON -> "SEMICOLON"
   | LPAREN -> "LPAREN"
   | RPAREN -> "RPAREN"
@@ -66,6 +65,7 @@ let token_to_string token =
   | RBRACE -> "RBRACE"
   | LBRACKET -> "LBRACKET"
   | RBRACKET -> "RBRACKET"
+  | COLON -> "COLON"
   (* keywords *)
   | FUNCTION -> "FUNCTION"
   | LET -> "LET"
