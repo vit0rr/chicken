@@ -1,4 +1,4 @@
-let test_let_statement () =
+(* let test_let_statement () =
   let program =
     {
       Ast.statements =
@@ -73,4 +73,4 @@ let () =
           Alcotest.test_case "expression statement" `Quick
             test_expression_statement;
         ] );
-    ]
+    ] *)

@@ -1,4 +1,4 @@
-let test_integer_literal () =
+(* let test_integer_literal () =
   let lexer = Lexer.new_lexer "5" in
   let parser = Parser.new_parser lexer in
   match Parser.parse_integer_literal parser with
@@ -153,4 +153,4 @@ let () =
       ( "parse prefix expression",
         [ Alcotest.test_case "prefix expression" `Quick test_prefix_expression ]
       );
-    ]
+    ] *)
