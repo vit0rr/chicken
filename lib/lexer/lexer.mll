@@ -12,6 +12,7 @@ let identifier = letter (letter | digit | '_')*
 rule token = parse
   | whitespace+    { token lexbuf }  (* Skip whitespace *)
   | digit+ as num  { new_token INT num }
+  | '"' ([^ '"']* as str) '"' { new_token STRING str }
   | "="           { new_token ASSIGN "=" }
   | "+"           { new_token PLUS "+" }
   | "-"           { new_token MINUS "-" }
