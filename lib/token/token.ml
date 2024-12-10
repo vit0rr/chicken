@@ -83,7 +83,7 @@ let keywords = function
   | "true" -> TRUE
   | "false" -> FALSE
   | "return" -> RETURN
-  | _ -> IDENT
+  | _ -> ILLEGAL
 
 let is_semicolon token = token.token_type = SEMICOLON
 let new_token token_type literal = { token_type; literal }
