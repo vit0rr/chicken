@@ -1,4 +1,4 @@
-type precedence =
+(* type precedence =
   | Lowest
   | Equals
   | Or
@@ -225,4 +225,4 @@ let parse_prefix_expression parser =
         else Ast.IntegerLiteral { token = t; value = v }
       in
       (parser, Some (Ast.PrefixExpression { token; operator; right }))
-  | _ -> (error_parse parser "Failed to parse right expression", None)
+  | _ -> (error_parse parser "Failed to parse right expression", None) *)

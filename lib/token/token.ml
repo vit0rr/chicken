@@ -34,7 +34,6 @@ type token_type =
   | IF
   | ELSE
   | RETURN
-  | MACRO
 
 type token = { token_type : token_type; literal : string }
 
@@ -75,7 +74,6 @@ let token_to_string token =
   | IF -> "IF"
   | ELSE -> "ELSE"
   | RETURN -> "RETURN"
-  | MACRO -> "MACRO"
 
 let keywords = function
   | "fn" -> FUNCTION
@@ -85,7 +83,6 @@ let keywords = function
   | "true" -> TRUE
   | "false" -> FALSE
   | "return" -> RETURN
-  | "macro" -> MACRO
   | _ -> IDENT
 
 let is_semicolon token = token.token_type = SEMICOLON
