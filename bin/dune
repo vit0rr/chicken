@@ -1,6 +1,4 @@
-(dirs token parser ast)
-
 (executable
  (public_name chicken)
  (name main)
- (libraries token lexer parser ast))
+ (libraries chicken))

@@ -1,4 +1,0 @@
-(library
- (name ast)
- (public_name chicken.ast)
- (libraries token fmt))

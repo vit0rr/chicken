@@ -1,4 +1,11 @@
-(dirs token lexer parser ast)
-
 (library
- (name chicken))
+ (name chicken)
+ (flags 
+  (:standard -w -37))
+  (preprocess 
+    (pps ppx_deriving.show sedlex.ppx))
+  (libraries ppx_deriving.runtime sedlex menhirLib))
+ 
+(menhir
+(modules parser)
+(flags --inspection --dump --table))
