@@ -1,4 +1,0 @@
-(library
- (name lexer)
- (public_name chicken.lexer)
- (libraries token fmt))

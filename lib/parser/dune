@@ -1,8 +1,0 @@
-(menhir
- (modules parser))
-
-(library
- (name parser)
- (public_name chicken.parser)
- (libraries token lexer fmt ast)
- (preprocess (pps ppx_deriving.show)))
